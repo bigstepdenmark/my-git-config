@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+PROJECT="-"
 BLACK=$(tput setaf 0)
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -16,14 +17,31 @@ BLINK=$(tput blink)
 REVERSE=$(tput smso)
 UNDERLINE=$(tput smul)
 
-# Kør Gradle clean build
-./gradlew clean build
+# Tjek for Java Gradle-projekt
+if test -f "build.gradle" || test -f "settings.gradle"; then
+   PROJECT="Gradle"
+   ./gradlew clean build
+# Tjek for VueJS-projekt
+elif test -f "package.json"; then
+   if grep -q '"vue"' package.json; then
+       PROJECT="VueJS"
+       echo ""
+       echo "The following commands will be executed.."
+       echo " - pnpm cypress:component" #køre komponent test
+       echo " - pnpm cypress:e2e" #køre end-2-end test (her skal du huske og køre pnpm run serve først)
+       echo " - pnpm lint" #finder lint issues
+       echo " - pnpm typecheck" #finder type issues
+       echo " - pnpm build" #bygge
+       echo ""
+       pnpm cypress:component && pnpm cypress:e2e && pnpm lint && pnpm typecheck && pnpm build
+   fi
+fi
 
 # Tjek om build fejlede
 if [ $? -ne 0 ]; then
     echo ""
     echo "=============================================================================="
-    echo "${RED} 🖐  Fejl! Gradle build mislykkedes. Annullerer commit!"
+    echo "${RED} 🖐  Fejl! ${PROJECT} Build mislykkedes. Annullerer commit!"
     echo "${NORMAL}=============================================================================="
     echo ""
     cat ~/my-git-config/files/nah.txt
