@@ -43,3 +43,5 @@ echo "--------------------------------------------------------------------------
 echo "Mine PR: $repo_baseurl/$repo_name/pullrequests?_a=mine"
 echo "-----------------------------------------------------------------------------"
 echo "${NORMAL}"
+
+xdg-open "$repo_baseurl/$repo_name/pullrequests?_a=mine" > /dev/null 2>&1 &
