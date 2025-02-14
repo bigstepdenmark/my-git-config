@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-bash ~/my-git-config/scripts/my_prs.sh
+bash ~/my-git-config/scripts/my-prs.sh
