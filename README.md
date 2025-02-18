@@ -1,6 +1,10 @@
 # My Git Config
 
-## Getting started
+### Getting started
+
+```bash
+git clone https://github.com/bigstepdenmark/my-git-config.git
+```
 
 ```bash
 cd my-git-config
@@ -10,7 +14,7 @@ cd my-git-config
 sh install.sh
 ```
 
-## Aliases
+### Aliases
 
 | Alias       | Command                                                                                                                                  | Example                             |
 |-------------|------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
@@ -33,7 +37,3 @@ sh install.sh
 | branches    | List latests local branches                                                                                                              | `git branches`                      |
 | prs         | Print links Azure DevOps                                                                                                                 | `git prs`                           |
 | list        | List git configurations/aliases                                                                                                          | `git list`                          |
-
-```bash
-git st
-```
