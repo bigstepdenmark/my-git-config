@@ -3,7 +3,6 @@
 	name = __NAME__
 [alias]
 	st		        = status
-	cm		        = !sh ~/my-git-config/scripts/prepend_branchname_to_commit_message.sh
 	list	        = config --global -l
 	save		    = !git add . && sh ~/my-git-config/scripts/prepend_branchname_to_commit_message.sh
 	undo		    = reset HEAD-1 --mixed
@@ -19,10 +18,9 @@
 	lastcm		    = log -1 HEAD --stat
 	current		    = rev-parse --abbrev-ref HEAD
 	pushu		    = !git push -u origin $(git current)
-	pul		        = pull
 	resetorigin		= !sh ~/my-git-config/scripts/reset_from_origin.sh
 	branches        = "!r() { refbranch=$1 count=$2; git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)|%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always --count=${count:-20} | while read line; do branch=$(echo \"$line\" | awk 'BEGIN { FS = \"|\" }; { print $1 }' | tr -d '*'); ahead=$(git rev-list --count \"${refbranch:-origin/main}..${branch}\"); behind=$(git rev-list --count \"${branch}..${refbranch:-origin/main}\"); colorline=$(echo \"$line\" | sed 's/^[^|]*|//'); echo \"$ahead|$behind|$colorline\" | awk -F'|' -vOFS='|' '{$5=substr($5,1,70)}1' ; done | ( echo \"ahead|behind|branch|lastcommit|message|author\n\" && cat) | column -ts'|';}; r"
-	prs             = !bash ~/my-git-config/scripts/my-prs.sh
+    prs             = !bash ~/my-git-config/scripts/my-prs.sh
 [init]
 	defaultBranch	= main
 [core]
