@@ -10,10 +10,10 @@
 	unwip		    = !sh ~/my-git-config/scripts/git_unstash.sh
 	main		    = checkout main
 	mainp		    = !git checkout main && git pull
-	cob		        = !git checkout -b $2
+	cob		        = "!f() { if [ -n \"$1\" ]; then branch=$1; else branch=$(git config --global --get mygit-config.lastBranch) || { echo 'No saved branch; run git cob <branch> first.' >&2; return 1; }; fi; if git show-ref --verify --quiet \"refs/heads/$branch\"; then git checkout \"$branch\"; else git checkout -b \"$branch\"; fi && { if [ -n \"$1\" ]; then git config --global mygit-config.lastBranch \"$branch\"; fi; }; }; f"
 	cobtag		    = !sh ~/my-git-config/scripts/fetch_all_tags_and_checkout.sh
 	getalltags	    = !git fetch --all --tags
-	co		        = !git checkout $2
+	co		        = "!f() { if [ -n \"$1\" ]; then git checkout \"$1\"; else branch=$(git config --global --get mygit-config.lastBranch) || { echo 'No saved branch; run git cob <branch> first.' >&2; return 1; }; git checkout \"$branch\"; fi; }; f"
 	ll		        = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
 	lastcm		    = log -1 HEAD --stat
 	current		    = rev-parse --abbrev-ref HEAD
@@ -21,6 +21,7 @@
 	resetorigin		= !sh ~/my-git-config/scripts/reset_from_origin.sh
 	branches        = "!r() { refbranch=$1 count=$2; git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)|%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always --count=${count:-20} | while read line; do branch=$(echo \"$line\" | awk 'BEGIN { FS = \"|\" }; { print $1 }' | tr -d '*'); ahead=$(git rev-list --count \"${refbranch:-origin/main}..${branch}\"); behind=$(git rev-list --count \"${branch}..${refbranch:-origin/main}\"); colorline=$(echo \"$line\" | sed 's/^[^|]*|//'); echo \"$ahead|$behind|$colorline\" | awk -F'|' -vOFS='|' '{$5=substr($5,1,70)}1' ; done | ( echo \"ahead|behind|branch|lastcommit|message|author\n\" && cat) | column -ts'|';}; r"
     prs             = !bash ~/my-git-config/scripts/my-prs.sh
+	delete			= !sh ~/my-git-config/scripts/delete.sh
 [init]
 	defaultBranch	= main
 [core]
